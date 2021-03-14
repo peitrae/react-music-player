@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const useSpotify = ({ token, onPlayerReady }) => {
+const useSpotify = ({ token, onPlayerReady, onPlayerChanged }) => {
   
   useEffect(() => {
     const script = document.createElement("script");
@@ -33,6 +33,8 @@ const useSpotify = ({ token, onPlayerReady }) => {
       });
 
       spotifySDK.addListener("ready", onPlayerReady);
+      
+      spotifySDK.addListener("player_state_changed", onPlayerChanged);
 
       spotifySDK.connect();
     }; // eslint-disable-next-line

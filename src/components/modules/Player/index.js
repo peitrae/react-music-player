@@ -56,7 +56,37 @@ const Player = () => {
       });
   };
 
-  useSpotify({ token, onPlayerReady });
+  const onPlayerChanged = (state) => {
+    console.log(state);
+
+    if (state) {
+      const {
+        track_window: { current_track, next_tracks, previous_tracks },
+        repeat_mode,
+        shuffle,
+      } = state;
+
+      setPlayer((player) => ({
+        ...player,
+        track: {
+          id: current_track.id,
+          image: current_track.album.images[0].url,
+          artists: current_track.artists,
+          name: current_track.name,
+          uri: current_track.uri,
+          durationMs: state.duration,
+        },
+        nextTracks: next_tracks,
+        previousTracks: previous_tracks,
+        progressMs: state.position,
+        repeat: repeat_mode,
+        isPlaying: !state.paused,
+        isShuffle: shuffle,
+      }));
+    }
+  };
+
+  useSpotify({ token, onPlayerReady, onPlayerChanged });
 
   const toggleExpandHandler = () => {
     setPlayer({ ...player, isExpand: !isExpand });
