@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import PlayerLoading from "./components/PlayerLoading";
+import PlayerNotActive from "./components/PlayerNotActive";
 import PlayerSection from "./components/PlayerSection";
 
 const Player = () => {
@@ -19,10 +21,11 @@ const Player = () => {
     isPlaying: false,
     isShuffle: false,
     isExpand: true,
-    isLoading: true,
+    isLoading: false,
+    isNotActive: true,
   });
 
-  const { isExpand, track } = player;
+  const { track, isExpand, isLoading, isNotActive } = player;
 
   const toggleExpandHandler = () => {
     setPlayer({ ...player, isExpand: !isExpand });
@@ -37,7 +40,11 @@ const Player = () => {
     setPlayer({ ...player, progressMs: newProgress });
   };
 
-  return (
+  return isNotActive ? (
+    <PlayerNotActive />
+  ) : isLoading ? (
+    <PlayerLoading />
+  ) : (
     <PlayerSection
       player={player}
       toggleExpandHandler={toggleExpandHandler}

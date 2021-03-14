@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Card = styled.div`
   border-radius: 1rem;
   background-color: ${({ theme }) => theme.colors.grayscale[400]};
-  width: 14rem;
+  width: 14.25rem;
   min-height: 12.5rem;
   padding: 1rem;
   box-sizing: border-box;
