@@ -105,6 +105,13 @@ export const getNewToken = async (
 
 export const logout = async () => {
   deleteToken();
+  localStorage.setItem("logout", Date.now());
   localStorage.clear();
   window.location.href = REDIRECT_URI;
+};
+
+export const logoutListener = (e) => {
+  if (e.key === "logout") {
+    window.location.href = REDIRECT_URI;
+  }
 };
