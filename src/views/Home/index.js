@@ -9,8 +9,9 @@ const Home = () => {
   const location = useLocation();
   const history = useHistory();
 
+  const scopes = encodeURIComponent("user-read-currently-playing user-read-recently-played streaming user-read-email user-read-private");
   const redirectUri = encodeURIComponent(process.env.REACT_APP_URL);
-  const url = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&response_type=code&redirect_uri=${redirectUri}`;
+  const url = `https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&scope=${scopes}&response_type=code&redirect_uri=${redirectUri}`;
   const code = new URLSearchParams(location.search).get("code");
 
   useEffect(() => {
