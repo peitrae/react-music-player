@@ -1,14 +1,21 @@
+import React from "react";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+
 import Theme from "./theme";
 import Home from "./views/Home";
 import Main from "./views/Main";
 
 function App() {
   return (
-    <div className="App">
+    <BrowserRouter>
       <Theme>
-        <Main />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/player" exact component={Main} />
+          <Redirect to="/" />
+        </Switch>
       </Theme>
-    </div>
+    </BrowserRouter>
   );
 }
 
