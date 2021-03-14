@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Theme from "./theme";
 import Home from "./views/Home";
 import Main from "./views/Main";
+import ProtectedRoute from "./components/route/ProtectedRoute";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <Theme>
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/player" exact component={Main} />
+          <ProtectedRoute path="/player" exact component={Main} />
           <Redirect to="/" />
         </Switch>
       </Theme>
