@@ -8,6 +8,8 @@ import {
   nextTrack,
   previousTrack,
   seekPositionTrack,
+  toggleShuffle,
+  setRepeatMode
 } from "../../../utils/api/spotify";
 import { getToken } from "../../../utils/inMemoryToken";
 import useTimeout from "../../../hooks/useTimeout";
@@ -45,7 +47,9 @@ const Player = () => {
     track,
     nextTracks,
     prevTracks,
+    repeat,
     progressMs,
+    isShuffle,
     isExpand,
     isLoading,
     isNotActive,
@@ -131,6 +135,24 @@ const Player = () => {
     }
   };
 
+  const seekHandler = () => {
+    seekPositionTrack(token, deviceId, progressMs);
+  };
+
+  const toggleShuffleHandler = () => {
+    toggleShuffle(token, deviceId, !isShuffle);
+  };
+
+  const setRepeatHandler = () => {
+    const nextState = {
+      0: "context",
+      1: "track",
+      2: "off",
+    };
+
+    setRepeatMode(token, deviceId, nextState[repeat]);
+  };
+
   const progressChangeHandler = (e) => {
     const newProgress = Math.floor((track.durationMs * e.target.value) / 100);
     setPlayer({ ...player, progressMs: newProgress });
@@ -149,6 +171,9 @@ const Player = () => {
       progressChangeHandler={progressChangeHandler}
       nextHandler={nextHandler}
       previousHandler={previousHandler}
+      seekHandler={seekHandler}
+      toggleShuffleHandler={toggleShuffleHandler}
+      setRepeatHandler={setRepeatHandler}
     />
   );
 };

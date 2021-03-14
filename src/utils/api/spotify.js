@@ -158,3 +158,43 @@ export const seekPositionTrack = async (token, deviceId, positionMs = 0) => {
     throw new Error(error);
   }
 };
+
+export const toggleShuffle = async (token, deviceId, state) => {
+  const url = `${urlPlayer}/shuffle`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const params = {
+    device_id: deviceId,
+    state,
+  };
+
+  try {
+    return await axios.put(url, null, {
+      headers,
+      params,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const setRepeatMode = async (token, deviceId, state) => {
+  const url = `${urlPlayer}/repeat`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const params = {
+    device_id: deviceId,
+    state,
+  };
+
+  try {
+    return await axios.put(url, null, {
+      headers,
+      params,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
