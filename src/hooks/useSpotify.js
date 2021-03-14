@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-const useSpotify = ({ token }) => {
-
+const useSpotify = ({ token, onPlayerReady }) => {
+  
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://sdk.scdn.co/spotify-player.js";
@@ -31,6 +31,8 @@ const useSpotify = ({ token }) => {
       spotifySDK.on("playback_error", ({ message }) => {
         console.error(`Playback Error: ${message}`);
       });
+
+      spotifySDK.addListener("ready", onPlayerReady);
 
       spotifySDK.connect();
     }; // eslint-disable-next-line

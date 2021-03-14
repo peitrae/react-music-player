@@ -1,9 +1,16 @@
 import React, { useState } from "react";
+import useSpotify from "../../../hooks/useSpotify";
+
+import { getInitialPlayer } from "../../../utils/api/spotify";
+import { getToken } from "../../../utils/inMemoryToken";
+
 import PlayerLoading from "./components/PlayerLoading";
 import PlayerNotActive from "./components/PlayerNotActive";
 import PlayerSection from "./components/PlayerSection";
 
 const Player = () => {
+  const { token } = getToken();
+
   const [player, setPlayer] = useState({
     deviceId: "",
     track: {
@@ -21,11 +28,29 @@ const Player = () => {
     isPlaying: false,
     isShuffle: false,
     isExpand: true,
-    isLoading: false,
+    isLoading: true,
     isNotActive: false,
   });
 
   const { track, isExpand, isLoading, isNotActive } = player;
+
+  const onPlayerReady = ({ device_id }) => {
+
+    getInitialPlayer(token)
+      .then((data) => {
+        setPlayer({
+          ...player,
+          ...data,
+          deviceId: device_id,
+          isLoading: false,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useSpotify({ token, onPlayerReady });
 
   const toggleExpandHandler = () => {
     setPlayer({ ...player, isExpand: !isExpand });
