@@ -4,7 +4,7 @@ const textWhite = css`
   color: ${({ theme }) => theme.colors.white};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.grayscale[300]};
+    color: ${({ theme }) => theme.colors.grayscale[100]};
   }
 `;
 
