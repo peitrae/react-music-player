@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import useSpotify from "../../../hooks/useSpotify";
 
-import { getInitialPlayer, playTrack, pauseTrack } from "../../../utils/api/spotify";
+import {
+  getInitialPlayer,
+  playTrack,
+  pauseTrack,
+  nextTrack,
+  previousTrack,
+  seekPositionTrack,
+} from "../../../utils/api/spotify";
 import { getToken } from "../../../utils/inMemoryToken";
 import useTimeout from "../../../hooks/useTimeout";
 
@@ -36,11 +43,13 @@ const Player = () => {
   const {
     deviceId,
     track,
+    nextTracks,
+    prevTracks,
     progressMs,
     isExpand,
     isLoading,
     isNotActive,
-    isPlaying
+    isPlaying,
   } = player;
 
   const onPlayerReady = ({ device_id }) => {
@@ -106,6 +115,22 @@ const Player = () => {
 
   const pauseHandler = () => pauseTrack(token, deviceId);
 
+  const nextHandler = () => {
+    if (nextTracks.length) {
+      nextTrack(token, deviceId);
+    } else {
+      seekPositionTrack(token, deviceId);
+    }
+  };
+
+  const previousHandler = () => {
+    if (prevTracks.length) {
+      previousTrack(token, deviceId);
+    } else {
+      seekPositionTrack(token, deviceId);
+    }
+  };
+
   const progressChangeHandler = (e) => {
     const newProgress = Math.floor((track.durationMs * e.target.value) / 100);
     setPlayer({ ...player, progressMs: newProgress });
@@ -122,6 +147,8 @@ const Player = () => {
       playHandler={playHandler}
       pauseHandler={pauseHandler}
       progressChangeHandler={progressChangeHandler}
+      nextHandler={nextHandler}
+      previousHandler={previousHandler}
     />
   );
 };

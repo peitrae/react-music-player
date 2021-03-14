@@ -100,3 +100,61 @@ export const pauseTrack = async (token, deviceId) => {
     throw new Error(error);
   }
 };
+
+export const nextTrack = async (token, deviceId) => {
+  const url = `${urlPlayer}/next`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const params = {
+    device_id: deviceId,
+  };
+
+  try {
+    return await axios.post(url, null, {
+      headers,
+      params,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const previousTrack = async (token, deviceId) => {
+  const url = `${urlPlayer}/previous`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const params = {
+    device_id: deviceId,
+  };
+
+  try {
+    return await axios.post(url, null, {
+      headers,
+      params,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const seekPositionTrack = async (token, deviceId, positionMs = 0) => {
+  const url = `${urlPlayer}/seek`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const params = {
+    device_id: deviceId,
+    position_ms: positionMs,
+  };
+
+  try {
+    return await axios.put(url, null, {
+      headers,
+      params,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
