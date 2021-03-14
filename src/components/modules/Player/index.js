@@ -3,6 +3,7 @@ import useSpotify from "../../../hooks/useSpotify";
 
 import { getInitialPlayer, playTrack } from "../../../utils/api/spotify";
 import { getToken } from "../../../utils/inMemoryToken";
+import useTimeout from "../../../hooks/useTimeout";
 
 import PlayerLoading from "./components/PlayerLoading";
 import PlayerNotActive from "./components/PlayerNotActive";
@@ -39,6 +40,7 @@ const Player = () => {
     isExpand,
     isLoading,
     isNotActive,
+    isPlaying
   } = player;
 
   const onPlayerReady = ({ device_id }) => {
@@ -57,8 +59,6 @@ const Player = () => {
   };
 
   const onPlayerChanged = (state) => {
-    console.log(state);
-
     if (state) {
       const {
         track_window: { current_track, next_tracks, previous_tracks },
@@ -87,6 +87,14 @@ const Player = () => {
   };
 
   useSpotify({ token, onPlayerReady, onPlayerChanged });
+
+  const progressTimeout = () => {
+    if (progressMs <= track.durationMs && isPlaying) {
+      setPlayer({ ...player, progressMs: progressMs + 1000 });
+    }
+  };
+
+  useTimeout(1000, progressTimeout, [progressMs, track, isPlaying]);
 
   const toggleExpandHandler = () => {
     setPlayer({ ...player, isExpand: !isExpand });
