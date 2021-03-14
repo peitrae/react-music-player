@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useSpotify from "../../../hooks/useSpotify";
 
-import { getInitialPlayer } from "../../../utils/api/spotify";
+import { getInitialPlayer, playTrack } from "../../../utils/api/spotify";
 import { getToken } from "../../../utils/inMemoryToken";
 
 import PlayerLoading from "./components/PlayerLoading";
@@ -32,10 +32,16 @@ const Player = () => {
     isNotActive: false,
   });
 
-  const { track, isExpand, isLoading, isNotActive } = player;
+  const {
+    deviceId,
+    track,
+    progressMs,
+    isExpand,
+    isLoading,
+    isNotActive,
+  } = player;
 
   const onPlayerReady = ({ device_id }) => {
-
     getInitialPlayer(token)
       .then((data) => {
         setPlayer({
@@ -56,7 +62,9 @@ const Player = () => {
     setPlayer({ ...player, isExpand: !isExpand });
   };
 
-  const playHandler = () => setPlayer({ ...player, isPlaying: true });
+  const playHandler = () => {
+    playTrack(token, deviceId, track.uri, progressMs);
+  };
 
   const pauseHandler = () => setPlayer({ ...player, isPlaying: false });
 

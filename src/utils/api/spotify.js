@@ -67,3 +67,20 @@ export const getInitialPlayer = async (token) => {
     throw new Error(error);
   }
 };
+
+export const playTrack = async (token, deviceId, trackUri, positionMs = 0) => {
+  const body = {
+    uris: [trackUri],
+    position_ms: positionMs,
+  };
+
+  try {
+    return await axios.put(`${urlPlayer}/play?device_id=${deviceId}`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
