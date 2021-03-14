@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useSpotify from "../../../hooks/useSpotify";
 
-import { getInitialPlayer, playTrack } from "../../../utils/api/spotify";
+import { getInitialPlayer, playTrack, pauseTrack } from "../../../utils/api/spotify";
 import { getToken } from "../../../utils/inMemoryToken";
 import useTimeout from "../../../hooks/useTimeout";
 
@@ -104,7 +104,7 @@ const Player = () => {
     playTrack(token, deviceId, track.uri, progressMs);
   };
 
-  const pauseHandler = () => setPlayer({ ...player, isPlaying: false });
+  const pauseHandler = () => pauseTrack(token, deviceId);
 
   const progressChangeHandler = (e) => {
     const newProgress = Math.floor((track.durationMs * e.target.value) / 100);

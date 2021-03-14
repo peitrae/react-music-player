@@ -84,3 +84,19 @@ export const playTrack = async (token, deviceId, trackUri, positionMs = 0) => {
     throw new Error(error);
   }
 };
+
+export const pauseTrack = async (token, deviceId) => {
+  const url = `${urlPlayer}/pause`;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const params = {
+    device_id: deviceId,
+  };
+
+  try {
+    return await axios.put(url, null, { headers, params });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
