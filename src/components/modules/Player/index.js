@@ -22,7 +22,7 @@ const Player = () => {
     isShuffle: false,
     isExpand: true,
     isLoading: false,
-    isNotActive: true,
+    isNotActive: false,
   });
 
   const { track, isExpand, isLoading, isNotActive } = player;

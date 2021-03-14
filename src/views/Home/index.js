@@ -5,7 +5,7 @@ import Button from "../../components/inputs/Button";
 
 const Home = () => (
   <Page>
-    <Button as="a" href={"/"} size="lg">
+    <Button as="a" href="/player" size="lg">
       Sign in with Spotify Premium
     </Button>
   </Page>
