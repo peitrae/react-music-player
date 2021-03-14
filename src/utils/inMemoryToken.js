@@ -67,3 +67,44 @@ export const login = async (
     throw new Error(`Login: ${error}`);
   }
 };
+
+
+export const getNewToken = async (
+  refreshToken = localStorage.getItem("refreshToken"),
+  url = "https://accounts.spotify.com/api/token"
+) => {
+  const headers = {
+    Authorization: `Basic ${Buffer.from(
+      `${CLIENT_ID}:${CLIENT_SECRET}`
+    ).toString("base64")}`,
+    "content-type": "application/x-www-form-urlencoded",
+  };
+  const params = {
+    grant_type: "refresh_token",
+    refresh_token: refreshToken,
+  };
+
+  try {
+    const { data } = await axios.post(url, null, { headers, params });
+
+    const expirationDate = new Date(
+      new Date().getTime() + data.expires_in * 1000
+    );
+
+    const isTokenSaved = setToken(data.access_token, expirationDate);
+
+    if (isTokenSaved) {
+      return getToken();
+    } else {
+      throw new Error("Request New Token: Error while trying save token");
+    }
+  } catch (error) {
+    throw new Error(`Request New Token: ${error}`);
+  }
+};
+
+export const logout = async () => {
+  deleteToken();
+  localStorage.clear();
+  window.location.href = REDIRECT_URI;
+};
