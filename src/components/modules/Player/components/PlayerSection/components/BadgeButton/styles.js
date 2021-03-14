@@ -12,7 +12,7 @@ export const Badge = styled.div`
   width: 8px;
   height: 8px;
   padding: 3px;
-  color: ${({ theme }) => theme.colors.black[400]};
+  color: ${({ theme }) => theme.colors.grayscale[400]};
   background: ${({ theme }) => theme.colors.primary.default};
   border-radius: 999rem;
   font-size: 8px;
