@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+
+import useTimeout from "../../../hooks/useTimeout";
+
 import PlayerLoading from "./components/PlayerLoading";
 import PlayerNotActive from "./components/PlayerNotActive";
 import PlayerSection from "./components/PlayerSection";
@@ -25,7 +28,15 @@ const Player = () => {
     isNotActive: false,
   });
 
-  const { track, isExpand, isLoading, isNotActive } = player;
+  const { track, isExpand, progressMs, isLoading, isNotActive, isPlaying } = player;
+
+  const progressTimeout = () => {
+    if (progressMs <= track.durationMs && isPlaying) {
+      setPlayer({ ...player, progressMs: progressMs + 1000 });
+    }
+  };
+
+  useTimeout(1000, progressTimeout, [progressMs, track, isPlaying]);
 
   const toggleExpandHandler = () => {
     setPlayer({ ...player, isExpand: !isExpand });
