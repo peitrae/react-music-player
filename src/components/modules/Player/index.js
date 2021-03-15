@@ -1,9 +1,26 @@
 import React, { useState } from "react";
+import useSpotify from "../../../hooks/useSpotify";
+
+import {
+  transferUserPlayback,
+  playTrack,
+  pauseTrack,
+  nextTrack,
+  previousTrack,
+  seekPositionTrack,
+  toggleShuffle,
+  setRepeatMode,
+} from "../../../utils/api/spotify";
+import { getToken } from "../../../utils/inMemoryToken";
+import useTimeout from "../../../hooks/useTimeout";
+
 import PlayerLoading from "./components/PlayerLoading";
 import PlayerNotActive from "./components/PlayerNotActive";
 import PlayerSection from "./components/PlayerSection";
 
 const Player = () => {
+  const { token } = getToken();
+
   const [player, setPlayer] = useState({
     deviceId: "",
     track: {
@@ -21,27 +38,134 @@ const Player = () => {
     isPlaying: false,
     isShuffle: false,
     isExpand: true,
-    isLoading: false,
+    isLoading: true,
     isNotActive: false,
   });
 
-  const { track, isExpand, isLoading, isNotActive } = player;
+  const {
+    deviceId,
+    track,
+    nextTracks,
+    prevTracks,
+    repeat,
+    progressMs,
+    isShuffle,
+    isExpand,
+    isLoading,
+    isNotActive,
+    isPlaying,
+  } = player;
+
+  const onPlayerReady = ({ device_id }) => {
+    transferUserPlayback(token, [device_id]).then(() => {
+      setPlayer({
+        ...player,
+        deviceId: device_id,
+        isLoading: false,
+      });
+    });
+  };
+
+  const onPlayerChanged = (state) => {
+    if (state) {
+      const {
+        track_window: { current_track, next_tracks, previous_tracks },
+        repeat_mode,
+        shuffle,
+        position,
+        duration,
+        paused,
+      } = state;
+
+      setPlayer((player) => ({
+        ...player,
+        track: {
+          id: current_track.id,
+          image: current_track.album.images[0].url,
+          artists: current_track.artists,
+          name: current_track.name,
+          uri: current_track.uri,
+          durationMs: duration,
+        },
+        nextTracks: next_tracks,
+        previousTracks: previous_tracks,
+        progressMs: position,
+        repeat: repeat_mode,
+        isPlaying: !paused,
+        isShuffle: shuffle,
+        isNotActive: false,
+      }));
+    } else {
+      setPlayer((player) => ({
+        ...player,
+        isNotActive: true,
+      }));
+    }
+  };
+
+  useSpotify({ token, onPlayerReady, onPlayerChanged });
+
+  const progressTimeout = () => {
+    if (progressMs <= track.durationMs && isPlaying) {
+      setPlayer({ ...player, progressMs: progressMs + 1000 });
+    }
+  };
+
+  useTimeout(1000, progressTimeout, [progressTimeout]);
 
   const toggleExpandHandler = () => {
     setPlayer({ ...player, isExpand: !isExpand });
   };
 
-  const playHandler = () => setPlayer({ ...player, isPlaying: true });
+  const playHandler = () => {
+    playTrack(token, deviceId, track.uri, progressMs);
+  };
 
-  const pauseHandler = () => setPlayer({ ...player, isPlaying: false });
+  const pauseHandler = () => pauseTrack(token, deviceId);
+
+  const nextHandler = () => {
+    if (nextTracks.length) {
+      nextTrack(token, deviceId);
+    } else {
+      seekPositionTrack(token, deviceId);
+    }
+  };
+
+  const previousHandler = () => {
+    if (prevTracks.length) {
+      previousTrack(token, deviceId);
+    } else {
+      seekPositionTrack(token, deviceId);
+    }
+  };
+
+  const seekHandler = () => {
+    seekPositionTrack(token, deviceId, progressMs);
+  };
+
+  const toggleShuffleHandler = () => {
+    toggleShuffle(token, deviceId, !isShuffle);
+  };
+
+  const setRepeatHandler = () => {
+    const nextState = {
+      0: "context",
+      1: "track",
+      2: "off",
+    };
+
+    setRepeatMode(token, deviceId, nextState[repeat]);
+  };
 
   const progressChangeHandler = (e) => {
     const newProgress = Math.floor((track.durationMs * e.target.value) / 100);
     setPlayer({ ...player, progressMs: newProgress });
   };
 
+  const transferHandler = () => transferUserPlayback(token, [deviceId]);
+
   return isNotActive ? (
-    <PlayerNotActive />
+    <PlayerNotActive transferHandler={transferHandler} />
   ) : isLoading ? (
     <PlayerLoading />
   ) : (
@@ -51,6 +175,11 @@ const Player = () => {
       playHandler={playHandler}
       pauseHandler={pauseHandler}
       progressChangeHandler={progressChangeHandler}
+      nextHandler={nextHandler}
+      previousHandler={previousHandler}
+      seekHandler={seekHandler}
+      toggleShuffleHandler={toggleShuffleHandler}
+      setRepeatHandler={setRepeatHandler}
     />
   );
 };
