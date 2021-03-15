@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import useSpotify from "../../../hooks/useSpotify";
 
 import {
-  getInitialPlayer,
+  transferUserPlayback,
   playTrack,
   pauseTrack,
   nextTrack,
   previousTrack,
   seekPositionTrack,
   toggleShuffle,
-  setRepeatMode
+  setRepeatMode,
 } from "../../../utils/api/spotify";
 import { getToken } from "../../../utils/inMemoryToken";
 import useTimeout from "../../../hooks/useTimeout";
@@ -57,18 +57,13 @@ const Player = () => {
   } = player;
 
   const onPlayerReady = ({ device_id }) => {
-    getInitialPlayer(token)
-      .then((data) => {
-        setPlayer({
-          ...player,
-          ...data,
-          deviceId: device_id,
-          isLoading: false,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
+    transferUserPlayback(token, [device_id]).then(() => {
+      setPlayer({
+        ...player,
+        deviceId: device_id,
+        isLoading: false,
       });
+    });
   };
 
   const onPlayerChanged = (state) => {
