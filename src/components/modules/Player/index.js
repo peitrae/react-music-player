@@ -72,6 +72,9 @@ const Player = () => {
         track_window: { current_track, next_tracks, previous_tracks },
         repeat_mode,
         shuffle,
+        position,
+        duration,
+        paused,
       } = state;
 
       setPlayer((player) => ({
@@ -82,14 +85,20 @@ const Player = () => {
           artists: current_track.artists,
           name: current_track.name,
           uri: current_track.uri,
-          durationMs: state.duration,
+          durationMs: duration,
         },
         nextTracks: next_tracks,
         previousTracks: previous_tracks,
-        progressMs: state.position,
+        progressMs: position,
         repeat: repeat_mode,
-        isPlaying: !state.paused,
+        isPlaying: !paused,
         isShuffle: shuffle,
+        isNotActive: false,
+      }));
+    } else {
+      setPlayer((player) => ({
+        ...player,
+        isNotActive: true,
       }));
     }
   };
@@ -102,7 +111,7 @@ const Player = () => {
     }
   };
 
-  useTimeout(1000, progressTimeout, [progressMs, track, isPlaying]);
+  useTimeout(1000, progressTimeout, [progressTimeout]);
 
   const toggleExpandHandler = () => {
     setPlayer({ ...player, isExpand: !isExpand });
@@ -153,8 +162,10 @@ const Player = () => {
     setPlayer({ ...player, progressMs: newProgress });
   };
 
+  const transferHandler = () => transferUserPlayback(token, [deviceId]);
+
   return isNotActive ? (
-    <PlayerNotActive />
+    <PlayerNotActive transferHandler={transferHandler} />
   ) : isLoading ? (
     <PlayerLoading />
   ) : (
