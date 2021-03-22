@@ -1,15 +1,27 @@
 <p align="center">
-  <h3 align="center">React Music Player</h3>
-
+  <h2 align="center">React Music Player</h2>
   <p align="center">
     A music player web app. Built with React, styled-components, Spotify Web API, Spotify Web Playback SDK.
-    <br />
-    <a href="https://peitrae-music-player.herokuapp.com/">View Demo</a>
-    ·
-    <a href="https://github.com/peitrae/react-music-player/issues">Report Bug</a>
   </p>
 </p>
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+<p align="center">
+    <a href="https://peitrae-music-player.herokuapp.com/">View Demo</a>
+    ·
+    <a href="https://github.com/peitrae/react-music-player/issues">Report Bug</a>
+</p>
+
+## Table of Contents
+<ol>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#support">Support</a></li>
+</ol>
 
 ## Installation
 
@@ -52,3 +64,9 @@ Peitra Erdi - <a href="https://www.linkedin.com/in/peitrae">LinkedIn</a> -
 ## Support 
 
 If you would like to support this and another of my projects or say thanks for this one, you can support me by <a href="https://www.buymeacoffee.com/peit">buying me a coffee</a> :coffee: 
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/peitrae/react-music-player/blob/master/LICENSE
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/peitrae
